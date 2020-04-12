@@ -1,0 +1,21 @@
+#heading {
+    text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+#main {
+    margin: auto;
+    width: 50%;   
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.hidden{
+    display:none;
+}
+
+.unhidden{
+    display:block;
+}
