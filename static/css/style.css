@@ -4,18 +4,18 @@
 }
 
 #main {
-    margin: auto;
-    width: 50%;   
+    margin: auto 30%;
+    width: 50%;
 }
 
-[hidden] {
-    display: none !important;
-}
+/*[hidden] {*/
+/*    display: none !important;*/
+/*}*/
 
-.hidden{
-    display:none;
-}
+/*.hidden{*/
+/*    display:none;*/
+/*}*/
 
-.unhidden{
-    display:block;
-}
+/*.unhidden{*/
+/*    display:block;*/
+/*}*/
