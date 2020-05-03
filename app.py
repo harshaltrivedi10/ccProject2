@@ -19,9 +19,9 @@ def uploadToBucket():
     userName = request.args.get('userName')
     print("in here")
     totalFilePath = "C:\\Users\\iRoNhIdE\\Desktop\\" + fileName
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\iRoNhIdE\\Desktop\\ccwebapp.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../../key.json"
     
-    storage_client = storage.Client("CCWebApp")
+    storage_client = storage.Client("CCHostedApp")
     bucket = storage_client.get_bucket("cc-project2-audio-file-bucket")
     blob = bucket.blob("Recording.wav")
     blob.upload_from_filename(totalFilePath)
@@ -78,6 +78,10 @@ def enrollUser(profile_id):
         'shortAudio': True,
     })
     try:
+        storage_client = storage.Client("CCHostedApp")
+        bucket = storage_client.get_bucket("cc-project2-audio-file-bucket")
+        blob = bucket.blob("Recording.wav")
+        blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         w = open("sample.wav", "rb").read()
         # code to download the audio from bucket
