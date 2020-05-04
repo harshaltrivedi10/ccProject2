@@ -19,7 +19,7 @@ def uploadToBucket():
     userName = request.args.get('userName')
     print("in here")
     totalFilePath = "C:\\Users\\iRoNhIdE\\Desktop\\" + fileName
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../../key.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:\\Arizona State University\\SEM-4\\CC\\Project2\\key.json"
     
     storage_client = storage.Client("CCHostedApp")
     bucket = storage_client.get_bucket("cc-project2-audio-file-bucket")

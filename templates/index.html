@@ -16,60 +16,133 @@
         <script src = "../static/js/index.js"></script>
     </head>
     <body>
-        <div class="row">
-            <div id = "heading" class="col-lg-12">
-                <h1>Speaker recognition and Performance Analysis</h1>
+        <div class="container">
+            <div class="row">
+                <div id="heading" class="col-lg-12">
+                    <h1>Speaker recognition and Performance Analysis</h1>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <ul style="text-align: left;">
-                    This Web application takes audio file as an input and achieves the following objectives:
-                    <li>Recognizes the speaker</li>
-                    <li>Generates Performance reports of the identified speaker</li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div id = "main"
-                 class="col-lg-12">
-                <form class="form-inline">
 
-                    <div class="form-group mb-2">
-                        <label for="personName"
-                               class="sr-only">Name: </label>
-                        <input class="form-control"
-                               type="text"
-                               id="personName"
-                               placeholder="Enter you name:">
+            <div class="row">
+                <h2 id="functionalities" class="col-lg-12">
+                    Two major functionalities:
+                </h2>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <h5 class="sectionTitle">
+                        Speaker Profile Enrollment
+                    </h5>
+                </div>
+                <div class="col">
+                    <h5 class="sectionTitle">
+                        Speaker Identification and Performance Evaluation
+                    </h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <ul class = "ulTextAlign">
+                        Provide a name, indicating the name of a speaker and an audio of at-least 30 seconds and you can:
+                        <li>Enroll a speaker</li>
+                        <li>Create a dedicated profile for a speaker</li>
+                    </ul>
+                    <p class="usage">Uses Microsoft's Speaker Profile API and Speaker Enrollment API</p>
+                </div>
+                <div class="col">
+                    <ul class = "ulTextAlign">
+                        Provide an audio of at-least 30 seconds of an unknown speaker and this functionality will:
+                        <li>Identify the speaker</li>
+                        <li>Generates Performance reports of the identified speaker</li>
+                    </ul>
+                    <p class="usage">Uses Microsoft's Speaker Identification API and Google Speech-To-Text API</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form class="form-inline">
+                        <div class="form-group mb-2">
+                            <label for="userName"
+                                   class="sr-only">Name: </label>
+                            <input class="form-control"
+                                   type="text"
+                                   style="margin-top: 5em; margin-left:3.2em; margin-right:3.2em"
+                                   id="userName"
+                                   placeholder="Enter you name:">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label class="btn btn-light"
+                                   style = "margin-top: 5em; width: 100%;">
+                                Browse <input type="file" id = "enrollmentFilePicker" hidden>
+                            </label>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <button type="button"
+                                id = "submitProfileAndIdentification"
+                                class="btn btn-primary mb-2"
+                                style="margin: auto;"
+                                onclick="onSubmitProfileAndEnrollClick(this)">Submit Request</button>
                     </div>
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label class="btn btn-default"
-                               style = "margin: auto 45%; width: 10%;">
-                            Browse <input type="file" id = "filePicker" hidden>
-                        </label>
+                </div>
+                <div class="vl"></div>
+                <div id="right" class="col">
+                    <form class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label class="btn btn-light"
+                                   style = "margin-top: 5em; margin-left: 13.2em; margin-right: 13.2em; width: 100%;">
+                                Browse <input type="file" id = "identificationFilePicker" hidden>
+                            </label>
+                        </div>
+                    </form>
+                    <div class="row" style="align-content: center;">
+                        <button type="button"
+                                id = "performanceEvaluation"
+                                class="btn btn-secondary mb-2"
+                                style="margin: auto;"
+                                onclick="onGetPerformanceEvaluationClick(this)">Evaluate Performance</button>
+                        <button type="button"
+                                id = "getReports"
+                                class = "btn btn-secondary mb-2"
+                                style="margin: auto;"
+                                onclick="">Get Reports</button>
                     </div>
-                    <button type="button"
-                            id = "submit"
-                            class="btn btn-primary mb-2"
-                            onclick="onClick(this)">Submit Request</button>
-                </form>
-<!--                <button type="button" style = "margin: auto 45%; width: 10%;" id = "downloadReports" class="btn btn-secondary hidden">Download Reports</button>  -->
+                </div>
             </div>
         </div>
 
         <script type="text/javascript">
             window.onload = () => {
-                document.querySelector("#personName").value = "";
+                document.querySelector('#userName').value = "";
+                document.querySelector('#enrollmentFilePicker').value = null;
+                console.log(document.querySelector('#enrollmentFilePicker').value);
+                console.log(document.querySelector('#userName').value);
             }
-            var thefile = document.getElementById('filePicker');
-            var fileName = thefile.value;
 
-            if (fileName.substring(3,11) == 'fakepath') {
-                fileName = fileName.substring(12);
+            function onSubmitProfileAndEnrollClick() {
+                console.log(document.querySelector('#enrollmentFilePicker').value);
+                console.log(document.querySelector('#userName').value);
+                if (document.querySelector("#userName").value == "" || document.querySelector('#enrollmentFilePicker').value == "") {
+                    alert("You either did not select a file or did not enter a name, please try again!");
+                    location.reload();
+                }
+                else {
+                    let userName = document.querySelector("#userName").value;
+                    let filePicker = document.querySelector('#enrollmentFilePicker');
+                    let fileName = filePicker.value;
+
+                    if (fileName.substring(3,11) === 'fakepath') {
+                        fileName = fileName.substring(12);
+                    }
+                    submitRequest(fileName, userName);
+                }
             }
-            function onClick() {
-                submitRequest(fileName);
+
+            function onGetPerformanceEvaluationClick() {
+                identifyAndGeneratePerformanceReport();
             }
         </script>
     </body>

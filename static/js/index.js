@@ -1,7 +1,6 @@
-const submitRequest = (fileName) => {
-    console.log(fileName)
-    var userName = document.querySelector("#personName").value;
-    console.log(userName);
+const submitRequest = (fileName, userName) => {
+    // console.log(fileName)
+    // console.log(userName);
     var request = new XMLHttpRequest()
     request.open('POST', 'http://127.0.0.1:5000/uploadFile?fileName='+fileName+'&userName='+userName, true)
     request.onload = function() {
@@ -11,17 +10,16 @@ const submitRequest = (fileName) => {
         console.log(data);
     }
     request.send();
-    // setTimeout(() => {
-    //     var item = document.getElementById(divID);
-    //     if (item) {
-    //         if(item.className=='btn btn-secondary hidden'){
-    //             item.className = 'btn btn-secondary unhidden' ;
-    //             clickedButton.value = 'hide';
-    //         }else{
-    //             item.className = 'btn btn-secondary hidden';
-    //             clickedButton.value = 'unhide';
-    //         }
-    //     }
-    // }, 1000);
+}
+
+const identifyAndGeneratePerformanceReport = () => {
+    let classes = document.querySelector("#getReports").classList;
+    // console.log(typeof (classes));
+    if (!classes.contains('hidden')) {
+        document.querySelector("#getReports").classList.add("hidden");
+    }
+    else {
+        document.querySelector("#getReports").classList.remove("hidden");
+    }
 }
 
