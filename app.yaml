@@ -2,7 +2,9 @@ runtime: python27
 entrypoint: gunicorn -b :$PORT main:app
 
 handlers:
-- url: auto
+- url: /
+  script: home.app
+- url: /.*
   script: home.app
 
 automatic_scaling:
