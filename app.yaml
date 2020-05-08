@@ -3,10 +3,8 @@ entrypoint: gunicorn -b :$PORT main:app
 #threadsafe: true
 
 handlers:
-- url: /
-  script: home.app
 - url: /.*
-  script: home.app
+  script: auto
 
 automatic_scaling:
   target_cpu_utilization: 0.65
