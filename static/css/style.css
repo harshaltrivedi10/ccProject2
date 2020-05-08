@@ -12,6 +12,13 @@
 .vl {
     border-left: 1px solid dimgray;
     height: 500px;
+    opacity: 0.5;
+}
+
+.vline {
+    border-left: 1px solid dimgray;
+    height: 158px;
+    opacity: 0.5;
 }
 
 .ulTextAlign {

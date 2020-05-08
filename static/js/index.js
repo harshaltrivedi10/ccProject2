@@ -12,14 +12,32 @@ const submitRequest = (fileName, userName) => {
     request.send();
 }
 
-const identifyAndGeneratePerformanceReport = () => {
-    let classes = document.querySelector("#getReports").classList;
+const identifyAndGeneratePerformanceReport = (fileName) => {
+    // let classes = document.querySelector("#getReports").classList;
     // console.log(typeof (classes));
-    if (!classes.contains('hidden')) {
-        document.querySelector("#getReports").classList.add("hidden");
+    // if (!classes.contains('hidden')) {
+    //     document.querySelector("#getReports").classList.add("hidden");
+    // } else {
+    //     document.querySelector("#getReports").classList.remove("hidden");
+    // }
+
+    var request = new XMLHttpRequest();
+    request.open('POST', 'http://127.0.0.1:5000/identifyUser?fileName='+fileName, true);
+    request.onload = function () {
+        var data = JSON.parse(this.response);
+        console.log('Request to identify user handled successfully!');
+        console.log(data);
     }
-    else {
-        document.querySelector("#getReports").classList.remove("hidden");
-    }
+    request.send()
 }
 
+const generateAndDownloadReport = () => {
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://127.0.0.1:5000/generateAndDownloadReport', true);
+    request.onload = function () {
+        // var data = JSON.parse(this.response);
+        console.log('Initial request handled successfully!');
+        // console.log(data);
+    }
+    request.send()
+}

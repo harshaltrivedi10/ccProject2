@@ -51,6 +51,7 @@
                     </ul>
                     <p class="usage">Uses Microsoft's Speaker Profile API and Speaker Enrollment API</p>
                 </div>
+                <div class="vline"></div>
                 <div class="col">
                     <ul class = "ulTextAlign">
                         Provide an audio of at-least 30 seconds of an unknown speaker and this functionality will:
@@ -108,7 +109,7 @@
                                 id = "getReports"
                                 class = "btn btn-secondary mb-2"
                                 style="margin: auto;"
-                                onclick="">Get Reports</button>
+                                onclick="generateReport()">Get Reports</button>
                     </div>
                 </div>
             </div>
@@ -118,6 +119,7 @@
             window.onload = () => {
                 document.querySelector('#userName').value = "";
                 document.querySelector('#enrollmentFilePicker').value = null;
+                document.querySelector('#identificationFilePicker').value = null;
                 console.log(document.querySelector('#enrollmentFilePicker').value);
                 console.log(document.querySelector('#userName').value);
             }
@@ -142,7 +144,24 @@
             }
 
             function onGetPerformanceEvaluationClick() {
-                identifyAndGeneratePerformanceReport();
+                if (document.querySelector('#identificationFilePicker').value == "") {
+                    alert("You did not select a file for generating performance report, please try again!");
+                    location.reload();
+                }
+                else {
+                    let filePicker = document.querySelector('#identificationFilePicker');
+                    let fileName = filePicker.value;
+
+                    if (fileName.substring(3,11) === 'fakepath') {
+                        fileName = fileName.substring(12);
+                    }
+                    identifyAndGeneratePerformanceReport(fileName);
+                }
+
+            }
+
+            function generateReport() {
+                generateAndDownloadReport()
             }
         </script>
     </body>
