@@ -1,8 +1,9 @@
-const submitRequest = (fileName, userName) => {
+const submitRequest = (fileName, userName, host) => {
     // console.log(fileName)
     // console.log(userName);
     var request = new XMLHttpRequest()
-    request.open('POST', 'http://0.0.0.0:8081/uploadFile?fileName='+fileName+'&userName='+userName, true)
+
+    request.open('POST', host+'/uploadFile?fileName='+fileName+'&userName='+userName, true)
     request.onload = function() {
         // Begin accessing JSON data here
         var data = JSON.parse(this.response);
@@ -12,7 +13,7 @@ const submitRequest = (fileName, userName) => {
     request.send();
 }
 
-const identifyAndGeneratePerformanceReport = (fileName) => {
+const identifyAndGeneratePerformanceReport = (fileName,  host) => {
     // let classes = document.querySelector("#getReports").classList;
     // console.log(typeof (classes));
     // if (!classes.contains('hidden')) {
@@ -22,7 +23,7 @@ const identifyAndGeneratePerformanceReport = (fileName) => {
     // }
 
     var request = new XMLHttpRequest();
-    request.open('POST', 'http://0.0.0.0:8081/identifyUser?fileName='+fileName, true);
+    request.open('POST', host+'/identifyUser?fileName='+fileName, true);
     request.onload = function () {
         var data = JSON.parse(this.response);
         console.log('Request to identify user handled successfully!');
@@ -31,9 +32,9 @@ const identifyAndGeneratePerformanceReport = (fileName) => {
     request.send()
 }
 
-const generateAndDownloadReport = () => {
+const generateAndDownloadReport = (host) => {
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://0.0.0.0:8081/generateAndDownloadReport', true);
+    request.open('GET', host+'/generateAndDownloadReport', true);
     request.onload = function () {
         // var data = JSON.parse(this.response);
         console.log('Initial request handled successfully!');

@@ -139,7 +139,9 @@
                     if (fileName.substring(3,11) === 'fakepath') {
                         fileName = fileName.substring(12);
                     }
-                    submitRequest(fileName, userName);
+                    var host = window.location.host
+                    console.log(host)
+                    submitRequest(fileName, userName, host);
                 }
             }
 
@@ -155,13 +157,17 @@
                     if (fileName.substring(3,11) === 'fakepath') {
                         fileName = fileName.substring(12);
                     }
-                    identifyAndGeneratePerformanceReport(fileName);
+                    var host = window.location.host
+                    console.log(host)
+                    identifyAndGeneratePerformanceReport(fileName, host);
                 }
 
             }
 
             function generateReport() {
-                generateAndDownloadReport()
+                var host = window.location.host
+                console.log(host)
+                generateAndDownloadReport(host)
             }
         </script>
     </body>
