@@ -2,7 +2,7 @@ const submitRequest = (fileName, userName, host) => {
     // console.log(fileName)
     // console.log(userName);
     var request = new XMLHttpRequest()
-
+    sonsole.log(host)
     request.open('POST', host+'/uploadFile?fileName='+fileName+'&userName='+userName, true)
     request.onload = function() {
         // Begin accessing JSON data here
@@ -21,7 +21,7 @@ const identifyAndGeneratePerformanceReport = (fileName,  host) => {
     // } else {
     //     document.querySelector("#getReports").classList.remove("hidden");
     // }
-
+    sonsole.log(host)
     var request = new XMLHttpRequest();
     request.open('POST', host+'/identifyUser?fileName='+fileName, true);
     request.onload = function () {
@@ -33,6 +33,7 @@ const identifyAndGeneratePerformanceReport = (fileName,  host) => {
 }
 
 const generateAndDownloadReport = (host) => {
+    sonsole.log(host)
     var request = new XMLHttpRequest();
     request.open('GET', host+'/generateAndDownloadReport', true);
     request.onload = function () {
