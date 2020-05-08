@@ -1,5 +1,6 @@
 runtime: python27
 entrypoint: gunicorn -b :$PORT main:app
+threadsafe: true
 
 handlers:
 - url: /
