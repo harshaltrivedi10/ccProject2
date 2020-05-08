@@ -5,7 +5,7 @@ import os
 import http.client, urllib.request, urllib.parse, urllib.error, base64, json, wave
 from google.cloud import firestore
 import time
-import librosa
+#import librosa
 from google.cloud import speech_v1
 import io
 import pandas as pd
@@ -88,7 +88,7 @@ def enrollUser(profile_id):
         blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         w = open("Recording.wav", "rb").read()
-        print(librosa.get_duration(filename="Recording.wav"))
+        #print(librosa.get_duration(filename="Recording.wav"))
         print(profile_id)
         # code to download the audio from bucket
         conn.request("POST", "/spid/v1.0/identificationProfiles/"+profile_id+"/enroll?%s" % params, w, headers)
@@ -159,7 +159,7 @@ def getStatusId(fileName):
     try:
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         print(fileName)
-        print(librosa.get_duration(filename=fileName))
+        #print(librosa.get_duration(filename=fileName))
         w = open(fileName, "rb").read()
         # insert code to download audio from bucket
         conn.request("POST", "/spid/v1.0/identify?identificationProfileIds=%s&%s" % (ids,params),w, headers)
