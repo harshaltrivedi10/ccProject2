@@ -118,7 +118,11 @@
                 document.querySelector('#testFileName').value = "";
             }
 
-            function onSubmitProfileAndEnrollClick() {
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function onSubmitProfileAndEnrollClick() {
                 console.log(document.querySelector('#userName').value);
                 if (document.querySelector("#userName").value == "") {
                     alert("You did not enter a name, please try again!");
@@ -129,12 +133,13 @@
                     let fileName = userName+'.wav';
 
                     submitRequest(fileName, userName);
+                    await sleep(2000);
                     alert("User Enrolled!");
                     location.reload();
                 }
             }
 
-            function onGetPerformanceEvaluationClick() {
+            async function onGetPerformanceEvaluationClick() {
                 if (document.querySelector('#testFileName').value == "") {
                     alert("You did not enter the name of the test file, please try again!");
                     location.reload();
@@ -144,14 +149,16 @@
                     let fileName = filePicker+'.wav';
 
                     identifyAndGeneratePerformanceReport(fileName);
+                    await sleep(2000);
                     alert("User has been identified and report has been generated!");
                     location.reload();
                 }
 
             }
 
-            function generateReport() {
+            async function generateReport() {
                 generateAndDownloadReport();
+                await sleep(2000);
                 alert('Report has been generated!');
                 location.reload();
             }
