@@ -314,8 +314,6 @@ def sendEmail(recepient, file_name):
     </html>
     """
     CHARSET = "utf-8"
-    client = boto3.client('ses', region_name=aws_region, aws_access_key_id="AKIAVSEGXB4YT5M4W5AB",
-                          aws_secret_access_key="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")
     msg = MIMEMultipart('mixed')
     msg['Subject'] = subject
     msg['From'] = sender
