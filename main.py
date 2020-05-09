@@ -8,6 +8,11 @@ import time
 from google.cloud import speech_v1
 import io
 import pandas as pd
+import boto3
+from botocore.exceptions import ClientError
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 api = Api(app)
@@ -243,8 +248,9 @@ def speechToText(speakerProfileId, storage_uri):
         for word, freq in wordsSpoken.items():
             docReferenceScore.set({word: {"frequency": freq}}, merge=True)
 
-@app.route('/generateAndDownloadReport', methods=['GET'])
+@app.route('/generateAndDownloadReport', methods=['GET', 'POST'])
 def downloadAndGenerateReport():
+    emailAddress = request.args.get('emailAddress')
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     db = firestore.Client()
     doc_ref = db.collection('performanceScore')
@@ -276,12 +282,13 @@ def downloadAndGenerateReport():
     print(df)
     fileName = "report.csv"
 
-    storage_client = storage.Client("cse546-final")
-    bucket = storage_client.get_bucket("cc-reports-bucket")
-    bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
-    blob = bucket.blob('newReport.csv')
+    df.to_csv('/tmp/'+fileName)
+    #storage_client = storage.Client("cse546-final")
+    #bucket = storage_client.get_bucket("cc-reports-bucket")
+    #bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
+    #blob = bucket.blob('newReport.csv')
     time.sleep(3)
-
+    sendEmail(emailAddress, '/tmp/'+fileName)
     res = ["Identification successfully handled!"]
     resp = make_response(jsonify(res))
 
@@ -289,6 +296,58 @@ def downloadAndGenerateReport():
     resp.headers['Access-Control-Allow-Methods'] = '*'
 
     return resp
+
+def sendEmail(recepient, file_name):
+    sender = 'ap@cdarevon.com'
+    aws_region = 'us-east-1'
+    subject = 'Customer Representative Report'
+    BODY_TEXT = "Hello,\r\nThis mail contains the report generated of the customer representatives.."
+    # The HTML body of the email.
+    BODY_HTML = """\
+    <html>
+    <head></head>
+    <body>
+    <h4>Hello!</h4>
+    <h4>Please find the attached file of the report generated of the customer representatives.</h4>
+    <h4>Thank You</h4>
+    </body>
+    </html>
+    """
+    CHARSET = "utf-8"
+    client = boto3.client('ses', region_name=aws_region, aws_access_key_id="AKIAVSEGXB4YT5M4W5AB",
+                          aws_secret_access_key="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")
+    msg = MIMEMultipart('mixed')
+    msg['Subject'] = subject
+    msg['From'] = sender
+    # msg['To'] = recipient
+    msg_body = MIMEMultipart('alternative')
+    textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
+    htmlpart = MIMEText(BODY_HTML.encode(CHARSET), 'html', CHARSET)
+    msg_body.attach(textpart)
+    msg_body.attach(htmlpart)
+    att = MIMEApplication(open(file_name, 'rb').read())
+    att.add_header('Content-Disposition', 'attachment', filename="report.csv")
+
+    if os.path.exists(file_name):
+        print("File exists")
+    else:
+        print("File does not exists")
+
+    msg.attach(msg_body)
+    msg.attach(att)
+    try:
+        response = client.send_raw_email(
+            Source=msg['From'],
+            Destinations=[recepient],
+            RawMessage={
+                'Data': msg.as_string(),
+            }
+        )
+    except ClientError as e:
+
+        return (e.response['Error']['Message'])
+    else:
+        return ("Email sent! Message ID"+response["MessageId"])
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)

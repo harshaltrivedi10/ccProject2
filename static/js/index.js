@@ -21,13 +21,13 @@ const identifyAndGeneratePerformanceReport = (fileName) => {
     request.send()
 }
 
-const generateAndDownloadReport = () => {
+const generateAndDownloadReport = (emailAddress) => {
     var request = new XMLHttpRequest();
-    request.open('GET', '/generateAndDownloadReport', true);
+    request.open('POST', '/generateAndDownloadReport?emailAddress='+emailAddress, true);
     request.onload = function () {
         // var data = JSON.parse(this.response);
         console.log('Initial request handled successfully!');
         // console.log(data);
     }
-    request.send()
+    request.send();
 }

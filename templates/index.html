@@ -102,6 +102,15 @@
                                 class="btn btn-secondary mb-2"
                                 style="margin: auto;"
                                 onclick="onGetPerformanceEvaluationClick(this)">Evaluate Performance</button>
+                    </div>
+                    <div class="row" style="align-content: center;">
+                        <label for="emailAddress"
+                               class="sr-only">Name: </label>
+                        <input class="form-control"
+                               type="text"
+                               style="margin-top: 5em; margin-left:8.2em; margin-right:3.2em; width: 270px;"
+                               id="emailAddress"
+                               placeholder="Enter email address:">
                         <button type="button"
                                 id = "getReports"
                                 class = "btn btn-secondary mb-2"
@@ -116,6 +125,7 @@
             window.onload = () => {
                 document.querySelector('#userName').value = "";
                 document.querySelector('#testFileName').value = "";
+                document.querySelector('#emailAddress').value = "";
             }
 
             function sleep(ms) {
@@ -157,7 +167,8 @@
             }
 
             async function generateReport() {
-                generateAndDownloadReport();
+                let emailAddress = document.querySelector('#emailAddress').value;
+                generateAndDownloadReport(emailAddress);
                 await sleep(2000);
                 alert('Report has been generated!');
                 location.reload();
