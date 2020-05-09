@@ -23,7 +23,7 @@ const identifyAndGeneratePerformanceReport = (fileName) => {
 
 const generateAndDownloadReport = (emailAddress) => {
     var request = new XMLHttpRequest();
-    request.open('POST', '/generateAndDownloadReport?emailAddress='+emailAddress, true);
+    request.open('GET', '/generateAndDownloadReport', true);
     request.onload = function () {
         // var data = JSON.parse(this.response);
         console.log('Initial request handled successfully!');
