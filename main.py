@@ -37,7 +37,7 @@ def uploadToBucket():
 
     #in document name insert the profile id
     print(db.collection('enrolledUsers').document(str(profileId)).get().to_dict())
-    enrollUser(profileId)
+    enrollUser(profileId, fileName)
 
     res = ["Request successfully handled!"]
     resp = make_response(jsonify(res))
@@ -68,7 +68,7 @@ def createProfile():
 
     return profile_id
 
-def enrollUser(profile_id):
+def enrollUser(profile_id, fileName):
     headers = {
         # Request headers
         'Content-Type': 'multipart/form-data',
@@ -82,10 +82,10 @@ def enrollUser(profile_id):
     try:
         storage_client = storage.Client("cse546-final")
         bucket = storage_client.get_bucket("cc-audio-bucket")
-        blob = bucket.blob("Recording.wav")
-        blob.download_to_filename("Recording.wav")
+        #blob = bucket.blob("Recording.wav")
+        #blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
-        w = open("Recording.wav", "rb").read()
+        w = open(fileName, "rb").read()
         #print(librosa.get_duration(filename="Recording.wav"))
         print(profile_id)
         # code to download the audio from bucket
