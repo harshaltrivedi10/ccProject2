@@ -26,7 +26,7 @@ def uploadToBucket():
     storage_client = storage.Client("cse546-final")
     bucket = storage_client.get_bucket("cc-audio-bucket")
     blob = bucket.blob(fileName)
-    blob.upload_from_filename(totalFilePath)
+    #blob.upload_from_filename(totalFilePath)
 
     profileId = createProfile()
 
@@ -82,12 +82,15 @@ def enrollUser(profile_id, fileName):
     try:
         storage_client = storage.Client("cse546-final")
         bucket = storage_client.get_bucket("cc-audio-bucket")
-        #blob = bucket.blob("Recording.wav")
+        blob = bucket.blob(fileName)
         #blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
-        w = open(fileName, "rb").read()
+        with open('/tmp/'+fileName, 'wb') as fileObject:
+            blob.download_to_filename(fileObject)
+        w = open('/tmp/'fileName, "rb").read()
         #print(librosa.get_duration(filename="Recording.wav"))
         print(profile_id)
+        print(w)
         # code to download the audio from bucket
         conn.request("POST", "/spid/v1.0/identificationProfiles/"+profile_id+"/enroll?%s" % params, w, headers)
         response = conn.getresponse()
@@ -155,10 +158,15 @@ def getStatusId(fileName):
     })
 
     try:
+        storage_client = storage.Client("cse546-final")
+        bucket = storage_client.get_bucket("cc-audio-bucket")
+        blob = bucket.blob(fileName)
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         print(fileName)
         #print(librosa.get_duration(filename=fileName))
-        w = open(fileName, "rb").read()
+        with open('/tmp/'+fileName, 'wb') as fileObject:
+            blob.download_to_filename(fileObject)
+        w = open('/tmp/'+fileName, "rb").read()
         # insert code to download audio from bucket
         conn.request("POST", "/spid/v1.0/identify?identificationProfileIds=%s&%s" % (ids,params),w, headers)
         response = conn.getresponse()

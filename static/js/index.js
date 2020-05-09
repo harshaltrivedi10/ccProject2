@@ -1,7 +1,6 @@
-const submitRequest = (fileName, userName, host) => {
+const submitRequest = (fileName, userName) => {
 
-    var request = new XMLHttpRequest()
-    console.log(host)
+    var request = new XMLHttpRequest();
     request.open('POST', '/uploadFile?fileName='+fileName+'&userName='+userName, true)
     request.onload = function() {
         var data = JSON.parse(this.response);
