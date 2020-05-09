@@ -87,7 +87,7 @@ def enrollUser(profile_id, fileName):
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         with open('/tmp/'+fileName, 'wb') as fileObject:
             blob.download_to_filename(fileObject)
-        w = open('/tmp/'fileName, "rb").read()
+        w = open('/tmp/'+fileName, "rb").read()
         #print(librosa.get_duration(filename="Recording.wav"))
         print(profile_id)
         print(w)
