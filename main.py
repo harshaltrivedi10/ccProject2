@@ -5,7 +5,6 @@ import os
 import http.client, urllib.request, urllib.parse, urllib.error, base64, json, wave
 from google.cloud import firestore
 import time
-#import librosa
 from google.cloud import speech_v1
 import io
 import pandas as pd
@@ -22,9 +21,8 @@ def uploadToBucket():
     fileName = request.args.get('fileName')
     userName = request.args.get('userName')
     #print("in here")
-    totalFilePath = "C:\\Users\\iRoNhIdE\\Desktop\\" + fileName
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:\\Arizona State University\\SEM-4\\CC\\Project2\\key.json"
-    
+    totalFilePath = fileName
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     storage_client = storage.Client("cse546-final")
     bucket = storage_client.get_bucket("cc-audio-bucket")
     blob = bucket.blob(fileName)
@@ -203,7 +201,7 @@ def getSpeaker(statusId, fileName):
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 def speechToText(speakerProfileId, storage_uri):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:\\Arizona State University\\SEM-4\\CC\\Project2\\key.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     client = speech_v1.SpeechClient()
     sample_rate_hertz = 16000
     language_code = "en-US"
@@ -247,7 +245,7 @@ def speechToText(speakerProfileId, storage_uri):
 
 @app.route('/generateAndDownloadReport', methods=['GET'])
 def downloadAndGenerateReport():
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:\\Arizona State University\\SEM-4\\CC\\Project2\\key.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     db = firestore.Client()
     doc_ref = db.collection('performanceScore')
     doc_ref = db.collection('performanceScore')
@@ -279,15 +277,13 @@ def downloadAndGenerateReport():
     df.fillna(0, inplace=True)
     print(df)
     fileName = "report.csv"
-    df.to_csv(fileName)
 
     storage_client = storage.Client("cse546-final")
     bucket = storage_client.get_bucket("cc-reports-bucket")
-    blob = bucket.blob(fileName)
-    blob.upload_from_filename(fileName)
+    bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
+    blob = bucket.blob('newReport.csv')
     time.sleep(3)
     blob.download_to_filename('downloaded'+fileName)
-
     res = ["Identification successfully handled!"]
     resp = make_response(jsonify(res))
 

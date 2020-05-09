@@ -3,7 +3,7 @@ const submitRequest = (fileName, userName, host) => {
     // console.log(userName);
     var request = new XMLHttpRequest()
     console.log(host)
-    request.open('POST', host+'/uploadFile?fileName='+fileName+'&userName='+userName, true)
+    request.open('POST', 'https://cse546-final.uc.r.appspot.com/uploadFile?fileName='+fileName+'&userName='+userName, true)
     request.onload = function() {
         // Begin accessing JSON data here
         var data = JSON.parse(this.response);
@@ -35,7 +35,7 @@ const identifyAndGeneratePerformanceReport = (fileName,  host) => {
 const generateAndDownloadReport = (host) => {
     console.log(host)
     var request = new XMLHttpRequest();
-    request.open('GET', host+'/generateAndDownloadReport', true);
+    request.open('GET', 'https://cse546-final.uc.r.appspot.com/generateAndDownloadReport', true);
     request.onload = function () {
         // var data = JSON.parse(this.response);
         console.log('Initial request handled successfully!');
