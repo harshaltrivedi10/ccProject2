@@ -20,14 +20,11 @@ def home():
 def uploadToBucket():
     fileName = request.args.get('fileName')
     userName = request.args.get('userName')
-    #print("in here")
     totalFilePath = fileName
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     storage_client = storage.Client("cse546-final")
     bucket = storage_client.get_bucket("cc-audio-bucket")
     blob = bucket.blob(fileName)
-    #blob.upload_from_filename(totalFilePath)
-
     profileId = createProfile()
 
     # Add a new document
@@ -85,12 +82,10 @@ def enrollUser(profile_id, fileName):
         blob = bucket.blob(fileName)
         print(fileName)
         print(profile_id)
-        #blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         with open('/tmp/'+fileName, 'wb') as fileObject:
             blob.download_to_file(fileObject)
         w = open('/tmp/'+fileName, "rb").read()
-        #print(librosa.get_duration(filename="Recording.wav"))
         print(w)
         # code to download the audio from bucket
         conn.request("POST", "/spid/v1.0/identificationProfiles/"+profile_id+"/enroll?%s" % params, w, headers)
@@ -104,7 +99,6 @@ def enrollUser(profile_id, fileName):
 @app.route('/identifyUser', methods=['GET', 'POST'])
 def identifyAndGenerateReport():
     fileName = request.args.get('fileName')
-    #totalFilePath =  + fileName
     status_id = getStatusId(fileName)
     time.sleep(15)
     getSpeaker(status_id, fileName)
@@ -164,7 +158,6 @@ def getStatusId(fileName):
         blob = bucket.blob(fileName)
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         print(fileName)
-        #print(librosa.get_duration(filename=fileName))
         with open('/tmp/'+fileName, 'wb') as fileObject:
             blob.download_to_file(fileObject)
         w = open('/tmp/'+fileName, "rb").read()
@@ -197,7 +190,6 @@ def getSpeaker(statusId, fileName):
         if data['processingResult'] == None:
             print("No user Found")
         else:
-           #print("Jari reje")
             print(data['processingResult']['identifiedProfileId'])
             speakerProfileId = data['processingResult']['identifiedProfileId']
             speechToText(speakerProfileId, fileName)
@@ -262,7 +254,6 @@ def downloadAndGenerateReport():
         d = i.to_dict()
         for item in d.items():
             d[item[0]] = item[1]['frequency']
-        # d['name'] = i.id
         final_d[i.id] = d
 
     df = pd.DataFrame.from_dict(final_d, orient='index')
@@ -290,7 +281,7 @@ def downloadAndGenerateReport():
     bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
     blob = bucket.blob('newReport.csv')
     time.sleep(3)
-    #blob.download_to_filename('downloaded'+fileName)
+
     res = ["Identification successfully handled!"]
     resp = make_response(jsonify(res))
 

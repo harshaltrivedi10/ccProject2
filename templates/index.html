@@ -70,17 +70,9 @@
                                    class="sr-only">Name: </label>
                             <input class="form-control"
                                    type="text"
-                                   style="margin-top: 5em; margin-left:3.2em; margin-right:3.2em"
+                                   style="margin-top: 5em; margin-left:8.0em; margin-right:0.5em; width: 270px;"
                                    id="userName"
-                                   placeholder="Enter you name:">
-                        </div>
-
-                        <div class="form-group mx-sm-3 mb-2">
-
-<!--                            <label class="btn btn-light"-->
-<!--                                   style = "margin-top: 5em; width: 100%;">-->
-<!--                                Browse <input type="file" id = "enrollmentFilePicker" hidden>-->
-<!--                            </label>-->
+                                   placeholder="Enter the name:">
                         </div>
                     </form>
                     <div class="row">
@@ -99,13 +91,9 @@
                                    class="sr-only">Name: </label>
                             <input class="form-control"
                                    type="text"
-                                   style="margin-top: 5em; margin-left:3.2em; margin-right:3.2em"
+                                   style="margin-top: 5em; margin-left:8.2em; margin-right:3.2em; width: 270px;"
                                    id="testFileName"
                                    placeholder="Enter test file name:">
-<!--                            <label class="btn btn-light"-->
-<!--                                   style = "margin-top: 5em; margin-left: 13.2em; margin-right: 13.2em; width: 100%;">-->
-<!--                                Browse <input type="file" id = "identificationFilePicker" hidden>-->
-<!--                            </label>-->
                         </div>
                     </form>
                     <div class="row" style="align-content: center;">
@@ -127,14 +115,10 @@
         <script type="text/javascript">
             window.onload = () => {
                 document.querySelector('#userName').value = "";
-                // document.querySelector('#enrollmentFilePicker').value = null;
-                // document.querySelector('#identificationFilePicker').value = null;
-                // console.log(document.querySelector('#enrollmentFilePicker').value);
-                // console.log(document.querySelector('#userName').value);
+                document.querySelector('#testFileName').value = "";
             }
 
             function onSubmitProfileAndEnrollClick() {
-                // console.log(document.querySelector('#enrollmentFilePicker').value);
                 console.log(document.querySelector('#userName').value);
                 if (document.querySelector("#userName").value == "") {
                     alert("You did not enter a name, please try again!");
@@ -142,15 +126,11 @@
                 }
                 else {
                     let userName = document.querySelector("#userName").value;
-                    // let filePicker = document.querySelector('#enrollmentFilePicker');
                     let fileName = userName+'.wav';
 
-                    // if (fileName.substring(3,11) === 'fakepath') {
-                    //     fileName = fileName.substring(12);
-                    // }
-                    // var host = window.location.host
-                    // console.log(host)
                     submitRequest(fileName, userName);
+                    alert("User Enrolled!");
+                    location.reload();
                 }
             }
 
@@ -163,20 +143,17 @@
                     let filePicker = document.querySelector('#testFileName').value;
                     let fileName = filePicker+'.wav';
 
-                    // if (fileName.substring(3,11) === 'fakepath') {
-                    //     fileName = fileName.substring(12);
-                    // }
-                    // var host = window.location.host
-                    // console.log(host)
                     identifyAndGeneratePerformanceReport(fileName);
+                    alert("User has been identified and report has been generated!");
+                    location.reload();
                 }
 
             }
 
             function generateReport() {
-                // var host = window.location.host
-                // console.log(host)
                 generateAndDownloadReport();
+                alert('Report has been generated!');
+                location.reload();
             }
         </script>
     </body>
