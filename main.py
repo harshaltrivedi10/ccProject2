@@ -192,8 +192,6 @@ def getSpeaker(statusId, fileName):
             print(data['processingResult']['identifiedProfileId'])
             speakerProfileId = data['processingResult']['identifiedProfileId']
             speechToText(speakerProfileId, fileName)
-            else:
-                print("Error")
         conn.close()
     except Exception as e:
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
