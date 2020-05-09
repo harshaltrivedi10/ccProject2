@@ -216,7 +216,7 @@ def speechToText(speakerProfileId, storage_uri):
         "language_code": language_code,
         }
 
-    with io.open(storage_uri, "rb") as f:
+    with io.open('/tmp/'+storage_uri, "rb") as f:
         content = f.read()
     audio = {"content": content}
 
