@@ -191,9 +191,7 @@ def getSpeaker(statusId, fileName):
            #print("Jari reje")
             print(data['processingResult']['identifiedProfileId'])
             speakerProfileId = data['processingResult']['identifiedProfileId']
-
-            if (speakerProfileId and fileName):
-                speechToText(speakerProfileId, fileName)
+            speechToText(speakerProfileId, fileName)
             else:
                 print("Error")
         conn.close()
@@ -201,6 +199,7 @@ def getSpeaker(statusId, fileName):
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 def speechToText(speakerProfileId, storage_uri):
+    print(speakerProfileId)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     client = speech_v1.SpeechClient()
     sample_rate_hertz = 16000
