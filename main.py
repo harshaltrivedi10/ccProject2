@@ -230,9 +230,9 @@ def speechToText(speakerProfileId, storage_uri):
     fireStoreClient = firestore.Client()
     docReference = fireStoreClient.collection("enrolledUsers").document(speakerProfileId).get().to_dict()
     userName = docReference["name"]
-    docReferenceScore = fireStoreClient.collection('performanceScore').document(userName)
+    docReferenceScore = fireStoreClient.collection('performanceScore').document(str(userName)
     importantWords = ["welcome", "thank you", "sorry", "apologise", "apologize", "good day", "nice day", "good morning", "good evening", "good noon", "awesome", "sweet", "hope", "see you", "bye", "hello", "hi", "please", "sure", "sort", "sorted", "enjoy", "safe"]
-    wordsSpoken = dict()
+    wordsSpoken = {}
     print(transcript)
 
     for word in importantWords:
@@ -240,7 +240,7 @@ def speechToText(speakerProfileId, storage_uri):
             wordsSpoken[word] = transcript.count(word)
     print(wordsSpoken)
     try:
-        word_dct = doc_ref.get().to_dict()
+        word_dct = docReferenceScore.get().to_dict()
         for word, freq in wordsSpoken.items():
             if word in word_dct.keys():
                 new_freq = word_dct[word]["frequency"] + freq
