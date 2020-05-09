@@ -288,7 +288,7 @@ def downloadAndGenerateReport():
     #bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
     #blob = bucket.blob('newReport.csv')
     time.sleep(3)
-    sendEmail(emailAddress, '/tmp/'+fileName)
+    sendEmail(str(emailAddress), str('/tmp/'+fileName))
     res = ["Identification successfully handled!"]
     resp = make_response(jsonify(res))
 
