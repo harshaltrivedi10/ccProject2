@@ -247,7 +247,6 @@ def downloadAndGenerateReport():
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     db = firestore.Client()
     doc_ref = db.collection('performanceScore')
-    doc_ref = db.collection('performanceScore')
     docs = list(doc_ref.stream())
     final_d = {}
     for i in docs:
@@ -282,7 +281,7 @@ def downloadAndGenerateReport():
     bucket.blob('newReport.csv').upload_from_string(df.to_csv(), 'text/csv')
     blob = bucket.blob('newReport.csv')
     time.sleep(3)
-    blob.download_to_filename('downloaded'+fileName)
+    #blob.download_to_filename('downloaded'+fileName)
     res = ["Identification successfully handled!"]
     resp = make_response(jsonify(res))
 
