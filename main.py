@@ -83,13 +83,14 @@ def enrollUser(profile_id, fileName):
         storage_client = storage.Client("cse546-final")
         bucket = storage_client.get_bucket("cc-audio-bucket")
         blob = bucket.blob(fileName)
+        print(fileName)
+        print(profile_id)
         #blob.download_to_filename("Recording.wav")
         conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
         with open('/tmp/'+fileName, 'wb') as fileObject:
             blob.download_to_filename(fileObject)
         w = open('/tmp/'+fileName, "rb").read()
         #print(librosa.get_duration(filename="Recording.wav"))
-        print(profile_id)
         print(w)
         # code to download the audio from bucket
         conn.request("POST", "/spid/v1.0/identificationProfiles/"+profile_id+"/enroll?%s" % params, w, headers)
