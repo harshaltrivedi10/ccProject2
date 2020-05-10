@@ -255,11 +255,21 @@ def downloadAndGenerateReport():
     db = firestore.Client()
     doc_ref = db.collection('performanceScore')
     docs = list(doc_ref.stream())
+    allWords = set()
     final_d = {}
     for i in docs:
         d = i.to_dict()
         for item in d.items():
+            allWords.add(item[0])
+
+    for i in docs:
+        d = i.to_dict()
+        wrds = set()
+        for item in d.items():
             d[item[0]] = item[1]['frequency']
+            wrds.add(item[0])
+        for n in list(allWords - wrds):
+            d[n] = 0
         final_d[i.id] = d
 
     df = pd.DataFrame.from_dict(final_d, orient='index')
