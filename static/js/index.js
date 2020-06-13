@@ -18,7 +18,7 @@ const identifyAndGeneratePerformanceReport = (fileName) => {
         console.log('Request to identify user handled successfully!');
         console.log(data);
     }
-    request.send()
+    request.send();
 }
 
 const generateAndDownloadReport = (emailAddress) => {
